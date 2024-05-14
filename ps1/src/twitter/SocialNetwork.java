@@ -87,6 +87,7 @@ public class SocialNetwork {
     }
 
 
+    // Create a list from elements of the map
     List<Map.Entry<String, Integer>> sortedEntries = new ArrayList<>(followerCounts.entrySet());
 
 

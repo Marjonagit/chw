@@ -78,8 +78,8 @@ public class SocialNetwork {
      */
     public static List<String> influencers(Map<String, Set<String>> followsGraph) {
     Map<String, Integer> followerCounts = new HashMap<>();
-
-
+//    test
+    // Count followers for each user
     for (Map.Entry<String, Set<String>> entry : followsGraph.entrySet()) {
         for (String follower : entry.getValue()) {
             followerCounts.put(follower, followerCounts.getOrDefault(follower, 0) + 1);

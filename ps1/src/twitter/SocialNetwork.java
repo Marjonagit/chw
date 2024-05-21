@@ -6,7 +6,11 @@ package twitter;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 /**
  * SocialNetwork provides methods that operate on a social network.
  * 
@@ -41,8 +45,26 @@ public class SocialNetwork {
      *         either authors or @-mentions in the list of tweets.
      */
     public static Map<String, Set<String>> guessFollowsGraph(List<Tweet> tweets) {
-        throw new RuntimeException("not implemented");
+    Map<String, Set<String>> followsGraph = new HashMap<>();
+
+    for (Tweet tweet : tweets) {
+        String author = tweet.getAuthor().toLowerCase();
+        Set<String> mentionedUsers = Extract.getMentionedUsers((List<Tweet>) tweet);
+
+        if (!followsGraph.containsKey(author)) {
+            followsGraph.put(author, new HashSet<>());
+        }
+
+        for (String mentionedUser : mentionedUsers) {
+            mentionedUser = mentionedUser.toLowerCase();
+            if (!mentionedUser.equals(author)) {
+                followsGraph.get(author).add(mentionedUser);
+            }
+        }
     }
+
+    return followsGraph;
+}
 
     /**
      * Find the people in a social network who have the greatest influence, in
@@ -54,7 +76,33 @@ public class SocialNetwork {
      *         descending order of follower count.
      */
     public static List<String> influencers(Map<String, Set<String>> followsGraph) {
-        throw new RuntimeException("not implemented");
+    Map<String, Integer> followerCounts = new HashMap<>();
+
+
+    for (Map.Entry<String, Set<String>> entry : followsGraph.entrySet()) {
+        for (String follower : entry.getValue()) {
+            followerCounts.put(follower, followerCounts.getOrDefault(follower, 0) + 1);
+        }
     }
+
+
+    List<Map.Entry<String, Integer>> sortedEntries = new ArrayList<>(followerCounts.entrySet());
+
+
+    Collections.sort(sortedEntries, new Comparator<Map.Entry<String, Integer>>() {
+        @Override
+        public int compare(Map.Entry<String, Integer> a, Map.Entry<String, Integer> b) {
+            return b.getValue().compareTo(a.getValue());
+        }
+    });
+
+
+    List<String> influencers = new ArrayList<>();
+    for (Map.Entry<String, Integer> entry : sortedEntries) {
+        influencers.add(entry.getKey());
+    }
+
+    return influencers;
+}
 
 }

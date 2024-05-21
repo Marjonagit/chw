@@ -3,11 +3,14 @@
  */
 package twitter;
 
-import static org.junit.Assert.*;
+import org.junit.Test;
 
 import java.time.Instant;
 import java.util.Arrays;
 import java.util.Set;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class ExtractTest {
 
